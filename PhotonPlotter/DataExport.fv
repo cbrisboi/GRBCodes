@@ -1,0 +1,5 @@
+set p "./Photons.fits"
+set e "./Events.fits"
+
+exporttable p text 0,1,2,3,4,9,14
+exporttable e text 0,1,2,3,4,9,14
