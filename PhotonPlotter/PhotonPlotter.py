@@ -4,14 +4,26 @@
 #
 #This program will take data from a ascii file for a GRB and then plot the energy of the photons within a given radius after a trigger time
 #
-#Requires Photons.grb to exist
+#Requires WeekPhotons.txt to exist
+#
+#produces Photons.grb
+#
+#
+#
 #
 #Usage: python PhotonPlotter.py 
 #
 #
 
+import sys
+
+
 import scipy as sp
 from matplotlib import pyplot as p
+
+
+
+
 
 
 filename ='Photons.grb'
