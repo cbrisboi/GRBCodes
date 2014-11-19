@@ -21,8 +21,8 @@ import scipy as sp
 
 
 
-datafile="/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/GRBTable.dat"
-output  ="/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/GRBTableClean.dat"
+datafile="../GRBTable.dat"
+output  ="../GRBParams.dat"
 space   ='     '
 
 #Importing file for parsing
