@@ -6,26 +6,51 @@
 #
 #This output another ascii file (much smaller) that can then be plotted using PhotonPlotter.py
 #
-#
+#sys library allows commandline arguments (like which burst we are working on)
 #
 #
 #Source File must be in form
-#En RA DEC L B time (possibly another thing???)
+#En RA DEC L B time Event_class(possibly another thing???)
+#
+#Usage: ParseData.py <burstname> <energy limit>
+#
+#Default energy limit is 100MeV
 
+import sys
 import scipy as sp
 
 
+#Only one burst and energy
+if ( len(sys.argv) > 2):
+    print("You can only parse data for One burst at a time")
+    sys.exit()
 
-datafile="RawPhotons.grb"
+#Only burst name given, use default 100MeV limit
+elif ( len(sys.argv == 1) ):
+    lim=100.0
+
+#Everything is good, set it up
+else:
+    name=sys.argv[0]
+    lim=sys.argv[1]
+
+
+
+#Everything is good, set it up
+burstname=name
+mev=lim
+burstdir="/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/"+str(burstname)+"/"
+
+
+
+datafile=burstdir+"WeekPhotons.txt"
 output  ="Photons.grb"
 space   ='     '
 
 #Importing file for parsing
-En, Ra, Dec, L, B, ti, EventClass = sp.loadtxt(datafile, unpack-True, skipprows=3)
+En, Ra, Dec, L, B, ti, EventClass = sp.loadtxt(datafile, unpack=True, skipprows=3)
 
 
-#energy limit
-mev = 100.0
 
 #size of data file, probably huge!
 length = len(En)

@@ -21,46 +21,37 @@ import scipy as sp
 
 
 
-datafile="GRBTable.dat"
-output  ="GRBTableClean.dat"
+datafile="/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/GRBTable.dat"
+output  ="/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/GRBTableClean.dat"
 space   ='     '
 
 #Importing file for parsing
 
 
-array = sp.genfromtxt('./GRBTable.dat', delimiter=',', dtype='S3, S7, S16, S16, S16, S8, S16, S20, S16')
+array = sp.genfromtxt(datafile, delimiter=',', dtype='S3, S7, S16, S16, S16, S8, S16, S20, S16', skiprows=1)
 
 
-n, GRB, Ra, Dec, Err, z, trigger, Bore, source 
-
-for i in xrange(len(array)):
-
-    n.append(int(array[i][0]))
-    GRB.append(str(array[i][1]))
-
-    Ra.append(float(array[i][2]))
-    Dec.append(float(array[i][3]))
+#n, GRB, Ra, Dec, Err, z, trigger, Bore, source = sp.genfromtxt(datafile, delimiter=',', dtype='S3, S7, S16, S16, S16, S8, S16, S20, S16', unpack=True, skiprows=1)
 
 
-    Err.append(float(array[i][4]))
-
-    if type(array[i][5])==str :
-        z.append(DummyRedshift)
-    else:
-        z.append(float(array[i][5]))
-    
-    trigger.append(float(array[i][6])
-
-
+n=[x[0] for x in array]
+GRB=[x[1] for x in array]
+Ra=[x[2] for x in array]
+Dec=[x[3] for x in array]
+Err=[x[4] for x in array]
+z=[x[5] for x in array]
+trigger=[x[6] for x in array]
+Bore=[x[7] for x in array]
+Source=[x[8] for x in array]
 
 # number of GRBs ~100 or so
 length = len(n)
 print length
 
-DummyRedshift=777
+DummyRedshift=777.0
 #To avoid issues with the ' - ' for no reshift, I replace it with 777, so that it is recognizeable, but still a number
 for i in xrange(length):
-    if  ( float(z[i]) != z[i] ):
+    if  ( type(z[i]) != float ):
         z[i]=DummyRedshift
 
 

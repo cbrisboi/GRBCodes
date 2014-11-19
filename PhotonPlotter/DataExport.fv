@@ -1,5 +1,8 @@
-set p "./Photons.fits"
-set e "./Events.fits"
 
-exporttable p text 0,1,2,3,4,9,14
-exporttable e text 0,1,2,3,4,9,14
+
+
+set p "/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/141028A/lat_photon_weekly_w334_p203_v001.fits"
+
+open $p
+
+exporttable $p text 0
