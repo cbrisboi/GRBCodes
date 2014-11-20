@@ -88,6 +88,9 @@ if (trigger==0.0):
     print("This GRB is not in the list!! Update it")
     sys.exit()
 
+
+
+
 #Setup for file writing
 file=open(output, 'w')
 header='#ENERGY(MeV) RA    DEC      L      B      TIME(s)\n'
@@ -101,18 +104,21 @@ file.write(header)
 #
 #Add other conditions as needed
 ##########################################################################
-
+trigger=trigger-1000.0
 stop=trigger+1000.0
 print trigger
+print ti[0]
 
 if (ti[0]>stop):
     print("Hey, doofus! You downloaded the wrong weekly file. Way to go.")
     sys.exit()
 
 for i in xrange(length):
-    if ( ( stop>ti[i]>trigger )and( En[i]>mev) ):
-        line=str(En)+space+str(Ra)+str(Dec)+space+str(L)+space+str(B)+space+str(ti)+'\n'
-        file.write(line)
+    if ( ( trigger<ti[i]<stop ) ):
+        if (En[i]>mev):
+            line=str(En)+space+str(Ra)+str(Dec)+space+str(L)+space+str(B)+space+str(ti)+'\n'
+            file.write(line)
+    
     if (ti[i]>stop):
         break
 
