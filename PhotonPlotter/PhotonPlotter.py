@@ -16,52 +16,52 @@
 #
 
 import sys
-
+from os.path import isfile
 
 import scipy as sp
 from matplotlib import pyplot as p
 
 
-print sys.argv
+#print sys.argv
 
 #Only burst name given                                                   
-if ( len(sys.argv) == 2 ):
-    name=sys.argv[1]
-else:
-    print("You can only plot one GRB at a time.")
+if ( len(sys.argv) > 3):
+    print("You can only parse data for One burst at a time")
     sys.exit()
 
+#Only burst name given, use default 100MeV limit
+elif ( len(sys.argv) == 2 ):
+    mev=100.0
+    name=sys.argv[1]
+    print("GRB{0}, Default: Plotting All Photons >100MeV" .format(name))
+
+#Everything is good, set it up
+else:
+    name=sys.argv[1]
+    mev=sys.argv[2]
+    print("GRB{0}, Plotting All Photons >{1}MeV" .format(name,lim))
 
 
 
-
-
-RealTimes='/home/campus26/cbrisboi/Desktop/GRB_Research/GRBCodes/GRBRealTime.dat'
 filename ='/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/{0}/Photons.grb' .format(name)
-output   ='EnergyTimePlot.ps'
+output   ='/home/campus26/cbrisboi/Desktop/GRB_Research/GRBs/{0}/EvTGRB{0}.ps'.format(name)
+
+
+if not(isfile(filename)):
+    print("The file {0} does not exist. Did you run ParseData.py first?" .format(filename))
+    sys.exit
 
 
 
-
-#bursts, times, centRa, cent Dec, err = sp.loadtxt(RealTimes, unpack=True, skiprows=1)
-
-
-#Check if name is a burst we can plot
-
-#for i in range(len(bursts)):
-    
+En,Ra,Dec,L,B,ti = sp.loadtxt(filename,unpack = True,skiprows=1)
 
 
 
-En,Ra,Dec,L,B,ti,ed = sp.loadtxt(filename,unpack = True,skiprows=1)
-
-
-mev=100.0
-
-p.title('GRB141028A above '+str(mev)+'MeV')
+p.title("GRB{0} above {1}MeV".format(name,mev))
 p.xlabel('Time (s)')
 p.ylabel('Energy (MeV)')
 
 p.yscale('log')
 
 p.scatter(ti, En, s=0.3, marker='.')
+p.savefig(output)

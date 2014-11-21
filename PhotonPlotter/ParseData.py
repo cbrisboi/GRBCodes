@@ -23,7 +23,7 @@
 import sys
 import scipy as sp
 
-print sys.argv
+#print sys.argv
 
 #Only one burst and energy
 if ( len(sys.argv) > 3):
@@ -34,12 +34,13 @@ if ( len(sys.argv) > 3):
 elif ( len(sys.argv) == 2 ):
     lim=100.0
     name=sys.argv[1]
+    print("GRB{0}, Default: All Photons >100MeV" .format(name))
 
 #Everything is good, set it up
 else:
     name=sys.argv[1]
     lim=sys.argv[2]
-
+    print("GRB{0}, All Photons >{1}MeV" .format(name,lim))
 
 
 #Everything is good, set it up
@@ -71,20 +72,20 @@ array = sp.genfromtxt(paramfilename, skiprows=2, dtype='S8, S16, S16, S10, S16, 
 #Load array values into the appropriate file columns                                                                           
 GRB=[x[0] for x in array]
 trig=[x[1] for x in array]
-z=[x[2] for x in array]
-ra=[x[3] for x in array]
-dec=[x[4] for x in array]
-err=[x[5] for x in array]
+#z=[x[2] for x in array]
+#ra=[x[3] for x in array]
+#dec=[x[4] for x in array]
+#err=[x[5] for x in array]
 
 
 #Find the trigger time
-trigger=0.0
+MET=0.0
 search=len(GRB)
 for i in range(search):
     if (burstname==GRB[i]):
-        trigger = float(trig[i])
+        MET = float(trig[i])
 
-if (trigger==0.0):
+if (MET==0.0):
     print("This GRB is not in the list!! Update it")
     sys.exit()
 
@@ -93,7 +94,7 @@ if (trigger==0.0):
 
 #Setup for file writing
 file=open(output, 'w')
-header='#ENERGY(MeV) RA    DEC      L      B      TIME(s)\n'
+header='#ENERGY(MeV)    RA          DEC           L            B           TIME(s)\n'
 file.write(header)
 
 
@@ -104,22 +105,32 @@ file.write(header)
 #
 #Add other conditions as needed
 ##########################################################################
-trigger=trigger-1000.0
-stop=trigger+1000.0
-print trigger
-print ti[0]
+
+
+#NEED TO ADD T90 functionality to window, need to change everytime for now
+window=3.0
+
+trigger=MET-window
+stop=MET+window
+#print MET
+#print stop
 
 if (ti[0]>stop):
-    print("Hey, doofus! You downloaded the wrong weekly file. Way to go.")
+    print("You downloaded the wrong weekly file. Way to go.")
+    print
     sys.exit()
 
+
+
+
 for i in xrange(length):
-    if ( ( trigger<ti[i]<stop ) ):
-        if (En[i]>mev):
-            line=str(En)+space+str(Ra)+str(Dec)+space+str(L)+space+str(B)+space+str(ti)+'\n'
-            file.write(line)
-    
+    #Find all photons in time window, and above the emergy limit
+    if ( ( trigger<ti[i]<stop )and (En[i]>mev) ):
+        line=str(En[i])+space+str(Ra[i])+space+str(Dec[i])+space+str(L[i])+space+str(B[i])+space+str(ti[i])+'\n'
+        file.write(line)
+    #No need to keep going after the time limit
     if (ti[i]>stop):
         break
 
 file.close()
+print("GRB{0}: Data Output to: {1}" .format(burstname, output))
