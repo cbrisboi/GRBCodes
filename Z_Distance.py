@@ -6,13 +6,12 @@ This program will take calculate the luminosity distance from a given redshift.
 
 optional arguments will be the 3 density parameters and the hubble parameter:
 
-I am polling these values from the Planck 2015 results 
+I am pulling these values from the Planck 2015 results 
 """
 ##########################
 ##      PARAMETERS      ##
 ##########################
 M=0.308
-k=0
 L=1-M
 h=0.678
 
@@ -80,15 +79,22 @@ print ''
 print 'Luminosity Distance to redshift z={0}' .format(red)
 print '--------------------------------------------------'
 
-how, err = quad (zdist, 0, red)
 
+
+"""
+Do the integration (Unitless)
+"""
+how, err = quad (zdist, 0, red)
+"""Scale by redshift"""
 far=(1+red)*how
 
+"""Add units, display!"""
 distMpc=D_h1*far
 distm=D_h2*far
 
 print ' {:>.3e} Mpc' .format(distMpc)
 print ' {:>.3e} m'   .format(distm)
+print ' {:>.3e} cm'   .format(distm*100.0)
 print '--------------------------------------------------'
 print ''
 print ''

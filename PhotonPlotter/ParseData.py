@@ -23,7 +23,7 @@
 import sys
 import scipy as sp
 
-#print sys.argv
+print sys.argv
 
 #Only one burst and energy
 if ( len(sys.argv) > 3):
